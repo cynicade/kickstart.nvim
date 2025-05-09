@@ -695,12 +695,12 @@ require('lazy').setup({
         --
         -- But for many setups, the LSP (`ts_ls`) will work just fine
         ts_ls = {},
-        eslint = {
-          settings = {
-            workingDirectory = { mode = 'location' },
-          },
-          root_dir = require('lspconfig').util.find_git_ancestor,
-        },
+        -- eslint = {
+        --   settings = {
+        --     workingDirectory = { mode = 'auto' },
+        --   },
+        --   root_dir = require('lspconfig').util.find_git_ancestor,
+        -- },
         --
 
         lua_ls = {
@@ -792,6 +792,7 @@ require('lazy').setup({
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
         javascript = { 'eslint_d', 'prettierd', 'prettier', stop_after_first = true },
+        -- javascript = { 'eslint', 'prettierd', 'prettier', stop_after_first = true },
       },
     },
   },
@@ -918,7 +919,7 @@ require('lazy').setup({
     name = 'rose-pine',
     config = function()
       require('rose-pine').setup {
-        variant = 'dawn',
+        variant = 'main',
       }
       vim.cmd 'colorscheme rose-pine'
     end,
@@ -998,6 +999,23 @@ require('lazy').setup({
     },
     {
       'tpope/vim-fugitive',
+    },
+    {
+      'nvimdev/dashboard-nvim',
+      event = 'VimEnter',
+      config = function()
+        require('dashboard').setup {
+          -- config
+        }
+      end,
+      dependencies = { { 'nvim-tree/nvim-web-devicons' } },
+    },
+    {
+      'folke/persistence.nvim',
+      event = 'BufReadPre', -- this will only start session saving when an actual file was opened
+      opts = {
+        -- add any custom options here
+      },
     },
     -- There are additional nvim-treesitter modules that you can use to interact
     -- with nvim-treesitter. You should go explore a few and see what interests you:
