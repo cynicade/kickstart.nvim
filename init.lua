@@ -110,6 +110,9 @@ vim.opt.mouse = 'a'
 -- Don't show the mode, since it's already in the status line
 vim.opt.showmode = false
 
+-- lazyredrawe to help with perf in larger files
+vim.opt.lazyredraw = true
+
 -- Sync clipboard between OS and Neovim.
 --  Schedule the setting after `UiEnter` because it can increase startup-time.
 --  Remove this option if you want your OS clipboard to remain independent.
@@ -409,7 +412,11 @@ require('lazy').setup({
         --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
         --   },
         -- },
-        -- pickers = {}
+        pickers = {
+          colorscheme = {
+            enable_preview = true,
+          },
+        },
         extensions = {
           ['ui-select'] = {
             require('telescope.themes').get_dropdown(),
@@ -473,6 +480,34 @@ require('lazy').setup({
         builtin.find_files { cwd = vim.fn.stdpath 'config' }
       end, { desc = '[S]earch [N]eovim files' })
     end,
+  },
+  {
+    'stevearc/oil.nvim',
+    opts = {},
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    keys = {
+      { '<leader>e', '<cmd>Oil<CR>', desc = 'Open file explorer (Oil)' },
+    },
+  },
+  {
+    'folke/zen-mode.nvim',
+    opts = {
+      window = {
+        width = 120, -- or a fraction like 0.7
+        options = {
+          number = true,
+          relativenumber = true,
+        },
+      },
+    },
+    keys = {
+      { '<leader>z', '<cmd>ZenMode<CR>', desc = 'Toggle Zen Mode (center buffer)' },
+    },
+  },
+  {
+    'pmizio/typescript-tools.nvim',
+    dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
+    opts = {},
   },
 
   -- LSP Plugins
@@ -694,7 +729,7 @@ require('lazy').setup({
         --    https://github.com/pmizio/typescript-tools.nvim
         --
         -- But for many setups, the LSP (`ts_ls`) will work just fine
-        ts_ls = {},
+        -- ts_ls = {},
         -- eslint = {
         --   settings = {
         --     workingDirectory = { mode = 'auto' },
@@ -792,6 +827,9 @@ require('lazy').setup({
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
         javascript = { 'eslint_d', 'prettierd', 'prettier', stop_after_first = true },
+        javascriptreact = { 'eslint_d', 'prettierd', 'prettier', stop_after_first = true },
+        typescript = { 'eslint_d', 'prettierd', 'prettier', stop_after_first = true },
+        typescriptreact = { 'eslint_d', 'prettierd', 'prettier', stop_after_first = true },
         -- javascript = { 'eslint', 'prettierd', 'prettier', stop_after_first = true },
       },
     },
@@ -895,9 +933,14 @@ require('lazy').setup({
   --   -- change the command in the config to whatever the name of that colorscheme is.
   --   --
   --   -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-  --   'slugbyte/lackluster.nvim',
-  --   -- 'nyoom-engineering/oxocarbon.nvim',
-  --   -- 'rebelot/kanagawa.nvim',
+  { 'slugbyte/lackluster.nvim' },
+  { 'nyoom-engineering/oxocarbon.nvim' },
+  { 'rebelot/kanagawa.nvim' },
+  { 'Mofiqul/vscode.nvim' },
+  -- { 'bluz71/vim-moonfly-colors' },
+  { 'olivercederborg/poimandres.nvim' },
+  { 'rose-pine/neovim' },
+
   --   priority = 1000, -- Make sure to load this before all the other start plugins.
   --   config = function()
   --     ---@diagnostic disable-next-line: missing-fields
@@ -914,16 +957,15 @@ require('lazy').setup({
   --   end,
   -- },
   {
-    'rose-pine/neovim',
+    'bluz71/vim-moonfly-colors',
     priority = 1000,
-    name = 'rose-pine',
+    -- name = 'rose-pine',
     config = function()
-      require('rose-pine').setup {
-        variant = 'main',
-      }
-      vim.cmd 'colorscheme rose-pine'
+      vim.cmd 'colorscheme moonfly'
     end,
   },
+
+  { 'xiyaowong/transparent.nvim' },
 
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
@@ -998,7 +1040,46 @@ require('lazy').setup({
       indent = { enable = true, disable = { 'ruby' } },
     },
     {
-      'tpope/vim-fugitive',
+      'nvim-treesitter/nvim-treesitter-textobjects',
+      dependencies = {
+        'nvim-treesitter/nvim-treesitter',
+      },
+    },
+    {
+      'NeogitOrg/neogit',
+      dependencies = {
+        'nvim-lua/plenary.nvim', -- required
+        'sindrets/diffview.nvim', -- optional - Diff integration
+
+        -- Only one of these is needed.
+        'nvim-telescope/telescope.nvim', -- optional
+        'ibhagwan/fzf-lua', -- optional
+        'echasnovski/mini.pick', -- optional
+        'folke/snacks.nvim', -- optional
+      },
+    },
+    {
+      'folke/snacks.nvim',
+      priority = 1000,
+      lazy = false,
+      ---@type snacks.Config
+      opts = {
+        -- your configuration comes here
+        -- or leave it empty to use the default settings
+        -- refer to the configuration section below
+        bigfile = { enabled = true },
+        dashboard = { enabled = true },
+        explorer = { enabled = true },
+        indent = { enabled = true },
+        input = { enabled = true },
+        picker = { enabled = true },
+        notifier = { enabled = true },
+        quickfile = { enabled = true },
+        scope = { enabled = true },
+        scroll = { enabled = true },
+        statuscolumn = { enabled = true },
+        words = { enabled = true },
+      },
     },
     {
       'nvimdev/dashboard-nvim',
@@ -1017,6 +1098,10 @@ require('lazy').setup({
         -- add any custom options here
       },
     },
+    {
+      'christoomey/vim-tmux-navigator',
+    },
+    { 'dmmulroy/ts-error-translator.nvim' },
     -- There are additional nvim-treesitter modules that you can use to interact
     -- with nvim-treesitter. You should go explore a few and see what interests you:
     --
@@ -1037,8 +1122,8 @@ require('lazy').setup({
   -- require 'kickstart.plugins.debug',
   -- require 'kickstart.plugins.indent_line',
   -- require 'kickstart.plugins.lint',
-  require 'kickstart.plugins.autopairs',
-  require 'kickstart.plugins.neo-tree',
+  -- require 'kickstart.plugins.autopairs',
+  -- require 'kickstart.plugins.neo-tree',
   require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
