@@ -959,10 +959,9 @@ require('lazy').setup({
   {
     'bluz71/vim-moonfly-colors',
     priority = 1000,
-    -- name = 'rose-pine',
-    config = function()
-      vim.cmd 'colorscheme moonfly'
-    end,
+    -- config = function()
+    --   vim.cmd 'colorscheme moonfly'
+    -- end,
   },
 
   { 'xiyaowong/transparent.nvim' },
@@ -1057,6 +1056,18 @@ require('lazy').setup({
         'echasnovski/mini.pick', -- optional
         'folke/snacks.nvim', -- optional
       },
+      keys = {
+        {
+          '<leader>ngb',
+          '<CMD>Neogit branch<CR>',
+          desc = 'Do the branch thing',
+        },
+        {
+          '<leader>ng',
+          '<CMD>Neogit<CR>',
+          desc = 'Do the thing',
+        },
+      },
     },
     {
       'folke/snacks.nvim',
@@ -1102,6 +1113,49 @@ require('lazy').setup({
       'christoomey/vim-tmux-navigator',
     },
     { 'dmmulroy/ts-error-translator.nvim' },
+    {
+      'pwntester/octo.nvim',
+      cmd = 'Octo',
+      opts = {
+        picker = 'telescope',
+        -- bare Octo command opens picker of commands
+        enable_builtin = true,
+      },
+      keys = {
+        {
+          '<leader>oi',
+          '<CMD>Octo issue list<CR>',
+          desc = 'List GitHub Issues',
+        },
+        {
+          '<leader>op',
+          '<CMD>Octo pr list<CR>',
+          desc = 'List GitHub PullRequests',
+        },
+        {
+          '<leader>od',
+          '<CMD>Octo discussion list<CR>',
+          desc = 'List GitHub Discussions',
+        },
+        {
+          '<leader>on',
+          '<CMD>Octo notification list<CR>',
+          desc = 'List GitHub Notifications',
+        },
+        {
+          '<leader>os',
+          function()
+            require('octo.utils').create_base_search_command { include_current_repo = true }
+          end,
+          desc = 'Search GitHub',
+        },
+      },
+      dependencies = {
+        'nvim-lua/plenary.nvim',
+        'nvim-telescope/telescope.nvim',
+        'nvim-tree/nvim-web-devicons',
+      },
+    },
     -- There are additional nvim-treesitter modules that you can use to interact
     -- with nvim-treesitter. You should go explore a few and see what interests you:
     --
