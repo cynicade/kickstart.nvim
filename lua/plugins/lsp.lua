@@ -26,6 +26,7 @@ return {
       "williamboman/mason-lspconfig.nvim",
       "WhoIsSethDaniel/mason-tool-installer.nvim",
       { "j-hui/fidget.nvim", opts = {} },
+      "saghen/blink.cmp", -- Ensure blink.cmp loads first for capabilities
     },
     config = function()
       -- LSP attach keymaps
@@ -132,6 +133,13 @@ return {
       })
       require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
+      -- Get capabilities from blink.cmp
+      local capabilities = vim.lsp.protocol.make_client_capabilities()
+      local has_blink, blink = pcall(require, "blink.cmp")
+      if has_blink then
+        capabilities = vim.tbl_deep_extend("force", capabilities, blink.get_lsp_capabilities())
+      end
+
       -- Setup LSP servers using new vim.lsp.config API (nvim 0.11+)
       require("mason-lspconfig").setup({
         ensure_installed = {},
@@ -139,7 +147,7 @@ return {
         handlers = {
           function(server_name)
             local server = servers[server_name] or {}
-            server.capabilities = vim.tbl_deep_extend("force", {}, vim.lsp.protocol.make_client_capabilities(), server.capabilities or {})
+            server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
 
             -- Use new vim.lsp.config API for nvim 0.11+
             if vim.lsp.config then

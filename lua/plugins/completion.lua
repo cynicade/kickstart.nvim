@@ -43,21 +43,8 @@ return {
   },
   -- Update LSP capabilities after blink.cmp loads
   config = function(_, opts)
-    local blink = require("blink.cmp")
-    blink.setup(opts)
-
-    -- Update LSP servers with blink.cmp capabilities
-    local capabilities = blink.get_lsp_capabilities()
-    local lspconfig = require("lspconfig")
-
-    -- Update any already-running LSP servers
-    for _, server in ipairs({ "clangd", "gopls", "rust_analyzer", "lua_ls" }) do
-      if lspconfig[server] then
-        local config = lspconfig[server]
-        if config.manager and config.manager.config then
-          config.manager.config.capabilities = vim.tbl_deep_extend("force", config.manager.config.capabilities or {}, capabilities)
-        end
-      end
-    end
+    require("blink.cmp").setup(opts)
+    -- Note: LSP capabilities are now handled in lsp.lua
+    -- This ensures a single source of truth for LSP configuration
   end,
 }
