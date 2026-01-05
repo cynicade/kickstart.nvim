@@ -12,10 +12,10 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- Load core configuration (will add in Phase 2)
--- require("core.options")
--- require("core.keymaps")
--- require("core.autocmds")
+-- Load core configuration
+require("core.options")
+require("core.keymaps")
+require("core.autocmds")
 
 -- Setup lazy.nvim
 require("lazy").setup({
