@@ -132,16 +132,22 @@ return {
       })
       require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
-      -- Setup LSP servers (will get capabilities from blink.cmp in next phase)
+      -- Setup LSP servers using new vim.lsp.config API (nvim 0.11+)
       require("mason-lspconfig").setup({
         ensure_installed = {},
         automatic_installation = false,
         handlers = {
           function(server_name)
             local server = servers[server_name] or {}
-            -- Capabilities will be added in completion phase
             server.capabilities = vim.tbl_deep_extend("force", {}, vim.lsp.protocol.make_client_capabilities(), server.capabilities or {})
-            require("lspconfig")[server_name].setup(server)
+
+            -- Use new vim.lsp.config API for nvim 0.11+
+            if vim.lsp.config then
+              vim.lsp.config(server_name, server)
+            else
+              -- Fallback to old lspconfig for nvim < 0.11
+              require("lspconfig")[server_name].setup(server)
+            end
           end,
         },
       })
