@@ -264,10 +264,15 @@ If a phase breaks:
 
 Track plugin addition/removal decisions here:
 
-* **[Date]** - Removed snacks.nvim (mega-suite, replaced with dedicated plugins)
-* **[Date]** - Removed dashboard.nvim (not needed, Neovim starts fast enough)
-* **[Date]** - Kept gitsigns, removed neogit (gitsigns sufficient for daily work)
-* *(Add decisions as you migrate)*
+* **2026-01-05** - Migration complete! Reduced from 30+ plugins to 14 modular plugins
+* **2026-01-05** - Removed snacks.nvim (mega-suite, replaced with mini.nvim + dedicated tools)
+* **2026-01-05** - Removed dashboard.nvim (not needed, Neovim starts fast enough)
+* **2026-01-05** - Kept both gitsigns AND neogit (gitsigns for inline, neogit for complex operations)
+* **2026-01-05** - Removed 5 colorschemes (lackluster, oxocarbon, vscode, poimandres, rose-pine)
+* **2026-01-05** - Kept moonfly (primary) and kanagawa (alternative)
+* **2026-01-05** - Kept octo.nvim (GitHub integration used regularly)
+* **2026-01-05** - Kept vim-tmux-navigator (tmux used daily)
+* **2026-01-05** - Kept `,,` and `;;` keybinds (used daily)
 
 ---
 
