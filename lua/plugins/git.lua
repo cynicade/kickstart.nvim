@@ -67,13 +67,17 @@ return {
     dependencies = {
       "nvim-lua/plenary.nvim",
       "sindrets/diffview.nvim",
-      "nvim-telescope/telescope.nvim",
+      "ibhagwan/fzf-lua", -- Use fzf-lua for picker
     },
     cmd = "Neogit",
     keys = {
       { "<leader>ng", "<cmd>Neogit<CR>", desc = "Open Neogit" },
       { "<leader>ngb", "<cmd>Neogit branch<CR>", desc = "Neogit branches" },
     },
-    opts = {},
+    opts = {
+      integrations = {
+        fzf_lua = true,
+      },
+    },
   },
 }
