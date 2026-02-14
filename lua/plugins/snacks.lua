@@ -66,13 +66,14 @@ return {
     quickfile = { enabled = true },
     statuscolumn = { enabled = true },
     words = { enabled = true },
+    dashboard = { enabled = true },
 
     -- Picker configuration (replaces telescope)
     picker = { enabled = true },
 
     -- Git integration
     gitbrowse = { enabled = true },
-    lazygit = { enabled = true },
+    lazygit = { enabled = false },
 
     -- Terminal
     terminal = { enabled = true },
@@ -170,6 +171,14 @@ return {
       end,
       desc = '[S]earch [S]elect Snacks Picker',
     },
+    -- delete buffer
+    {
+      '<leader>dd',
+      function()
+        Snacks.bufdelete()
+      end,
+      desc = '[D]elete buffer without messing up window layout',
+    },
 
     -- Git keymaps
     {
@@ -179,20 +188,20 @@ return {
       end,
       desc = 'Lazygit',
     },
-    {
-      '<leader>gf',
-      function()
-        Snacks.lazygit.log_file()
-      end,
-      desc = 'Lazygit Current File History',
-    },
-    {
-      '<leader>gl',
-      function()
-        Snacks.lazygit.log()
-      end,
-      desc = 'Lazygit Log',
-    },
+    -- {
+    --   '<leader>gf',
+    --   function()
+    --     Snacks.lazygit.log_file()
+    --   end,
+    --   desc = 'Lazygit Current File History',
+    -- },
+    -- {
+    --   '<leader>gl',
+    --   function()
+    --     Snacks.lazygit.log()
+    --   end,
+    --   desc = 'Lazygit Log',
+    -- },
     {
       '<leader>gb',
       function()
@@ -203,23 +212,23 @@ return {
 
     -- Terminal
     -- bottom 2-up
-    { '<leader>td', bottom_terms, desc = '[T]erminals Bottom 2-up' },
-
-    -- focus each one quickly (optional but useful)
-    {
-      '<leader>t1',
-      function()
-        Snacks.terminal.toggle(nil, { env = { SNACKS_TERM = '1' }, win = { position = 'bottom', height = 15 } })
-      end,
-      desc = '[T]erminal 1 (bottom)',
-    },
-    {
-      '<leader>t2',
-      function()
-        Snacks.terminal.toggle(nil, { env = { SNACKS_TERM = '2' }, win = { position = 'bottom', height = 15 } })
-      end,
-      desc = '[T]erminal 2 (bottom)',
-    },
+    -- { '<leader>td', bottom_terms, desc = '[T]erminals Bottom 2-up' },
+    --
+    -- -- focus each one quickly (optional but useful)
+    -- {
+    --   '<leader>t1',
+    --   function()
+    --     Snacks.terminal.toggle(nil, { env = { SNACKS_TERM = '1' }, win = { position = 'bottom', height = 15 } })
+    --   end,
+    --   desc = '[T]erminal 1 (bottom)',
+    -- },
+    -- {
+    --   '<leader>t2',
+    --   function()
+    --     Snacks.terminal.toggle(nil, { env = { SNACKS_TERM = '2' }, win = { position = 'bottom', height = 15 } })
+    --   end,
+    --   desc = '[T]erminal 2 (bottom)',
+    -- },
     -- float toggle
     { '<leader>tt', toggle_float_term, desc = '[T]erminal Floa[t]' },
     { '<leader>tt', toggle_float_term, desc = '[T]erminal Floa[t]', mode = 't' },
